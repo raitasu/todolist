@@ -80,6 +80,20 @@ function App() {
         setTodolists([{id:newTodolistId, title:title, filter:'all'}, ...todolists, ]);
         setTasks({...tasks, [newTodolistId]:[]})
     };
+
+
+    const changeTitleTask = (todolistId:string, id:string, newTitle:string) => {
+        debugger
+        setTasks({
+            ...tasks,
+            [todolistId]: tasks[todolistId].map((task) =>
+                task.id === id ? { ...task, title: newTitle } : task,
+            ),
+        });
+    }
+    const onChangeTodolistTitle = (todolistId:string, newTitle:string)=> {
+        setTodolists(todolists.map(todolist=>todolist.id === todolistId ? {...todolist, title: newTitle}: todolist))
+    }
     return (
         <div className="App">
             <AddItemForm callback={addTodolist} />
@@ -105,6 +119,8 @@ function App() {
                         changeStatus={changeTaskStatus}
                         filter={todolist.filter}
                         removeTodolist={removeTodolist}
+                        changeTitleTask={changeTitleTask}
+                        onChangeTodolistTitle={onChangeTodolistTitle}
                     />
                 );
             })}

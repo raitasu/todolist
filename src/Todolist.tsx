@@ -1,7 +1,9 @@
+import React from "react";
 import { FilterButtonType, TaskType } from "./App";
 import "./App.css";
 import classes from "./Todolist.module.css";
 import AddItemForm from "./Components/AddItemForm";
+import EditableSpan from "./Components/EditableSpan";
 
 type PropsType = {
     id: string;
@@ -13,14 +15,22 @@ type PropsType = {
     changeStatus: (todolistId: string, id: string, checked: boolean) => void;
     filter: string;
     removeTodolist: (todolistid: string) => void;
+    changeTitleTask: (todolistId: string, id: string, newTitle: string) => void;
+    onChangeTodolistTitle: (todolistId: string, newTitle: string) => void;
 };
 
 const Todolist = (props: PropsType) => {
     const onChangeStatusHandler = (todolistId: string, newId: string, value: boolean) => {
         props.changeStatus(todolistId, newId, value);
     };
-
+    const onChangeTodolistTitleHandler = (newTitle: string) => {
+        props.onChangeTodolistTitle(props.id, newTitle);
+    };
     const methodMap = props.filterTasks.map((task) => {
+        const onChangeTaskTitle = (newTitle: string) => {
+            props.changeTitleTask(props.id, task.id, newTitle);
+        };
+
         return (
             <li key={task.id}>
                 <button
@@ -37,7 +47,7 @@ const Todolist = (props: PropsType) => {
                         onChangeStatusHandler(props.id, task.id, event.currentTarget.checked)
                     }
                 />
-                <span>{task.title}</span>
+                <EditableSpan title={task.title} onChange={onChangeTaskTitle} />
             </li>
         );
     });
@@ -45,15 +55,16 @@ const Todolist = (props: PropsType) => {
     const onClickHandler = (value: FilterButtonType) => {
         props.changeFilter(value, props.id);
     };
-    const addTask = (title:string) => {
+    const addTask = (title: string) => {
         props.addTask(props.id, title);
     };
     return (
         <div>
             <div className={classes.todolistTitle}>
-                <div>
-                    <h1>{props.title}</h1>
-                </div>
+                <h1>
+                    <EditableSpan title={props.title} onChange={onChangeTodolistTitleHandler} />
+                </h1>
+
                 <div>
                     <button
                         onClick={() => {
