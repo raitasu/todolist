@@ -10,6 +10,7 @@ function App() {
     const removeTask = (newID: string) => {
         const deleteTasks = tasks.filter((el) => el.id !== newID)
         setTasks(deleteTasks)
+
     }
 
     let [tasks, setTasks] = useState([
