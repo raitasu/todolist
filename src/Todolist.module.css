@@ -5,3 +5,8 @@
 .errorMessage {
     color: red;
 }
+
+.todolistTitle {
+    display: flex;
+    align-items: center;
+}
