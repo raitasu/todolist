@@ -1,7 +1,7 @@
-import React, { ChangeEvent, KeyboardEvent, useState } from "react";
-import {FilterButtonType, TaskType} from "./App";
+import { FilterButtonType, TaskType } from "./App";
 import "./App.css";
 import classes from "./Todolist.module.css";
+import AddItemForm from "./Components/AddItemForm";
 
 type PropsType = {
     id: string;
@@ -15,11 +15,7 @@ type PropsType = {
     removeTodolist: (todolistid: string) => void;
 };
 
-
 const Todolist = (props: PropsType) => {
-    let [title, setTitle] = useState("");
-    let [error, setError] = useState<string | null>(null);
-
     const onChangeStatusHandler = (todolistId: string, newId: string, value: boolean) => {
         props.changeStatus(todolistId, newId, value);
     };
@@ -49,27 +45,9 @@ const Todolist = (props: PropsType) => {
     const onClickHandler = (value: FilterButtonType) => {
         props.changeFilter(value, props.id);
     };
-
-    const onChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
-        setError(null);
-        setTitle(event.currentTarget.value);
+    const addTask = (title:string) => {
+        props.addTask(props.id, title);
     };
-
-    const onClickAddTask = () => {
-        if (title.trim() !== "") {
-            props.addTask(props.id, title.trim());
-            setTitle("");
-        } else {
-            setError("Title is required!");
-        }
-    };
-
-    const onKeyPressHandler = (event: KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === "Enter") {
-            onClickAddTask();
-        }
-    };
-
     return (
         <div>
             <div className={classes.todolistTitle}>
@@ -77,21 +55,17 @@ const Todolist = (props: PropsType) => {
                     <h1>{props.title}</h1>
                 </div>
                 <div>
-                    <button onClick={()=>{props.removeTodolist(props.id)}}>X</button>
+                    <button
+                        onClick={() => {
+                            props.removeTodolist(props.id);
+                        }}
+                    >
+                        X
+                    </button>
                 </div>
             </div>
 
-            <div>
-                <input
-                    className={error ? classes.error : ""}
-                    value={title}
-                    onChange={onChangeTitle}
-                    onKeyPress={onKeyPressHandler}
-                />
-
-                <button onClick={onClickAddTask}>Add languages</button>
-                {error && <div className={error ? classes.errorMessage : ""}>{error}</div>}
-            </div>
+            <AddItemForm callback={addTask} />
             <div>
                 <ul>{methodMap}</ul>
             </div>
