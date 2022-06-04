@@ -84,21 +84,21 @@ const Todolist = (props: PropsType) => {
                 <div>{methodMap}</div>
             </div>
             <div>
-                <Button variant={props.filter === 'all' ? 'outlined' : 'text'} color={'primary'}
+                <Button style={{color:'DimGrey'}} variant={props.filter === 'all' ? 'outlined' : 'text'} color={'primary'}
                     onClick={() => {
                         onClickHandler("all");
                     }}
                 >
                     All
                 </Button>
-                <Button variant={props.filter === 'active' ? 'outlined' : 'text'} color={'primary'}
+                <Button style={{color:'DimGrey'}} variant={props.filter === 'active' ? 'outlined' : 'text'} color={'primary'}
                     onClick={() => {
                         onClickHandler("active");
                     }}
                 >
                     Active
                 </Button>
-                <Button variant={props.filter === 'completed' ? 'outlined' : 'text'} color={'primary'}
+                <Button style={{color:'DimGrey'}} variant={props.filter === 'completed' ? 'outlined' : 'text'} color={'primary'}
                     onClick={() => {
                         onClickHandler("completed");
                     }}

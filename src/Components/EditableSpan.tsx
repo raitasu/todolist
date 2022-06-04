@@ -27,8 +27,7 @@ const EditableSpan = (props: EditableSpanType) => {
             onChange={onChangeHandler}
             type="text"
             onBlur={activateViewHandler}
-            autoFocus
-                   size={'small'}
+            autoFocus size={'small'}
         />
     ) : (
         <span onDoubleClick={editModeHandler}>{props.title}</span>

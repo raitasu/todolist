@@ -40,11 +40,12 @@ const AddItemForm = (props: AddItemFormType) => {
                 size={"small"}
                 label={'Title'}
                 helperText={error}
+
             />
 
             <IconButton
                 color={"primary"}
-                style={{ maxWidth: "40px", maxHeight: "40px", minWidth: "40px", minHeight: "40px" }}
+                style={{ maxWidth: "40px", maxHeight: "40px", minWidth: "40px", minHeight: "40px" ,color:'DimGrey'}}
                 onClick={onClickAddTask}
             >
                 <AddBox/>

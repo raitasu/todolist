@@ -23,12 +23,39 @@ export type TaskType = {
 };
 
 function App() {
+
     let todolist1 = v1();
     let todolist2 = v1();
     let [todolists, setTodolists] = useState<Array<TodolistType>>([
         { id: todolist1, title: "What to learn ? ", filter: "all" },
         { id: todolist2, title: "What to buy ? ", filter: "all" },
     ]);
+
+    const changeFilter = (value: FilterButtonType, todolistId: string) => {
+        setTodolists(
+            todolists.map((todolist) =>
+                todolist.id === todolistId ? { ...todolist, filter: value } : todolist,
+            ),
+        );
+    };
+    const removeTodolist = (todolistId: string) => {
+        setTodolists(todolists.filter((todolist) => todolist.id !== todolistId));
+        delete tasks[todolistId];
+        setTasks({ ...tasks });
+    };
+    const addTodolist = (title: string) => {
+        let newTodolistId = v1();
+        setTodolists([{ id: newTodolistId, title: title, filter: "all" }, ...todolists]);
+        setTasks({ ...tasks, [newTodolistId]: [] });
+    };
+    const changeTodolistTitle = (todolistId: string, newTitle: string) => {
+        setTodolists(
+            todolists.map((todolist) =>
+                todolist.id === todolistId ? { ...todolist, title: newTitle } : todolist,
+            ),
+        );
+    };
+
     let [tasks, setTasks] = useState<TasksStateType>({
         [todolist1]: [
             { id: v1(), title: "HTML", isDone: true },
@@ -42,32 +69,6 @@ function App() {
         ],
     });
 
-    const removeTodolist = (todolistId: string) => {
-        setTodolists(todolists.filter((todolist) => todolist.id !== todolistId));
-        delete tasks[todolistId];
-        setTasks({ ...tasks });
-    };
-
-    const removeTask = (todolistId: string, taskId: string) => {
-        setTasks({
-            ...tasks,
-            [todolistId]: tasks[todolistId].filter((task) => task.id !== taskId),
-        });
-    };
-
-    const changeFilter = (value: FilterButtonType, todolistId: string) => {
-        setTodolists(
-            todolists.map((todolist) =>
-                todolist.id === todolistId ? { ...todolist, filter: value } : todolist,
-            ),
-        );
-    };
-
-    const addTask = (todolistId: string, newTitle: string) => {
-        const newTask = { id: v1(), title: newTitle, isDone: false };
-        setTasks({ ...tasks, [todolistId]: [newTask, ...tasks[todolistId]] });
-    };
-
     const changeTaskStatus = (todolistId: string, id: string, checked: boolean) => {
         setTasks({
             ...tasks,
@@ -76,13 +77,16 @@ function App() {
             ),
         });
     };
-
-    const addTodolist = (title: string) => {
-        let newTodolistId = v1();
-        setTodolists([{ id: newTodolistId, title: title, filter: "all" }, ...todolists]);
-        setTasks({ ...tasks, [newTodolistId]: [] });
+    const removeTask = (todolistId: string, taskId: string) => {
+        setTasks({
+            ...tasks,
+            [todolistId]: tasks[todolistId].filter((task) => task.id !== taskId),
+        });
     };
-
+    const addTask = (todolistId: string, newTitle: string) => {
+        const newTask = { id: v1(), title: newTitle, isDone: false };
+        setTasks({ ...tasks, [todolistId]: [newTask, ...tasks[todolistId]] });
+    };
     const changeTitleTask = (todolistId: string, id: string, newTitle: string) => {
         debugger;
         setTasks({
@@ -92,17 +96,11 @@ function App() {
             ),
         });
     };
-    const onChangeTodolistTitle = (todolistId: string, newTitle: string) => {
-        setTodolists(
-            todolists.map((todolist) =>
-                todolist.id === todolistId ? { ...todolist, title: newTitle } : todolist,
-            ),
-        );
-    };
+
     return (
         <div className="App">
-            <AppBar position="static">
-                <Toolbar>
+            <AppBar position="static" color={"primary"} style={{backgroundColor:'DimGrey'}}>
+                <Toolbar >
                     <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
                         <Menu />
                     </IconButton>
@@ -141,7 +139,7 @@ function App() {
                                 filter={todolist.filter}
                                 removeTodolist={removeTodolist}
                                 changeTitleTask={changeTitleTask}
-                                onChangeTodolistTitle={onChangeTodolistTitle}
+                                onChangeTodolistTitle={changeTodolistTitle}
                             />
                                 </Paper>
                             </Grid>
