@@ -1,15 +1,21 @@
 import { v1 } from "uuid";
 import { TasksStateType } from "../App";
-import {AddTodolistType} from "./todolists-reducer";
+import { AddTodolistType } from "./todolists-reducer";
 
-export type ActionType = RemoveTasksType | AddTasksType | ChangeTaskStatusType
-    | ChangeTaskTitleType | AddTodolistType
+export type ActionType =
+    | RemoveTasksType
+    | AddTasksType
+    | ChangeTaskStatusType
+    | ChangeTaskTitleType
+    | AddTodolistType;
 export type RemoveTasksType = ReturnType<typeof removeTasksAC>;
 export type AddTasksType = ReturnType<typeof addTaskAC>;
 export type ChangeTaskStatusType = ReturnType<typeof changeTaskStatusAC>;
 export type ChangeTaskTitleType = ReturnType<typeof changeTaskTitleAC>;
 
-export const tasksReducer = (state: TasksStateType, action: ActionType) => {
+const initialState: TasksStateType = {};
+
+export const tasksReducer = (state = initialState, action: ActionType) => {
     switch (action.type) {
         case "REMOVE-TASKS":
             return {
@@ -37,16 +43,16 @@ export const tasksReducer = (state: TasksStateType, action: ActionType) => {
                 [action.todolistId]: state[action.todolistId].map((t) =>
                     t.id === action.taskId
                         ? {
-                            ...t,
-                            title: action.newTaskTitle,
-                        }
+                              ...t,
+                              title: action.newTaskTitle,
+                          }
                         : t,
                 ),
             };
         case "ADD-TODOLIST":
-            return { ...state, [action.payload.todolistId]:[] };
+            return { ...state, [action.payload.todolistId]: [] };
         default:
-            throw new Error("Error");
+            return state;
     }
 };
 

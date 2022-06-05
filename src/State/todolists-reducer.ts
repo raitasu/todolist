@@ -11,7 +11,11 @@ export type AddTodolistType = ReturnType<typeof addTodolistAC>;
 export type ChangeTodolistTitleType = ReturnType<typeof changeTodolistTitleAC>;
 export type ChangeTodolistFilterType = ReturnType<typeof changeTodolistFilterAC>;
 
-export const todolistsReducer = (state: Array<TodolistType>, action: ActionType) => {
+
+
+const initialState:Array<TodolistType>=[]
+
+export const todolistsReducer = (state=initialState, action: ActionType) => {
     switch (action.type) {
         case "REMOVE-TODOLIST":
             return state.filter((td) => td.id !== action.payload.todolistId);
@@ -36,7 +40,7 @@ export const todolistsReducer = (state: Array<TodolistType>, action: ActionType)
                     : td,
             );
         default:
-            throw new Error("Error");
+            return state
     }
 };
 
