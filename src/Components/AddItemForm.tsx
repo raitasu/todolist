@@ -1,17 +1,20 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from "react";
-import {IconButton, TextField} from "@mui/material";
-import {AddBox} from "@mui/icons-material";
+import { IconButton, TextField } from "@mui/material";
+import { AddBox } from "@mui/icons-material";
 
 type AddItemFormType = {
     callback: (title: string) => void;
 };
 
-const AddItemForm = (props: AddItemFormType) => {
+const AddItemForm = React.memo((props: AddItemFormType) => {
     let [title, setTitle] = useState("");
     let [error, setError] = useState<string | null>(null);
-
+    console.log("AddItemForm");
     const onChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
-        setError(null);
+        if (error !== null) {
+            setError(null);
+        }
+
         setTitle(event.currentTarget.value);
     };
 
@@ -38,20 +41,25 @@ const AddItemForm = (props: AddItemFormType) => {
                 onChange={onChangeTitle}
                 onKeyPress={onKeyPressHandler}
                 size={"small"}
-                label={'Title'}
+                label={"Title"}
                 helperText={error}
-
             />
 
             <IconButton
                 color={"primary"}
-                style={{ maxWidth: "40px", maxHeight: "40px", minWidth: "40px", minHeight: "40px" ,color:'DimGrey'}}
+                style={{
+                    maxWidth: "40px",
+                    maxHeight: "40px",
+                    minWidth: "40px",
+                    minHeight: "40px",
+                    color: "DimGrey",
+                }}
                 onClick={onClickAddTask}
             >
-                <AddBox/>
+                <AddBox />
             </IconButton>
         </div>
     );
-};
+});
 
 export default AddItemForm;
