@@ -8,6 +8,7 @@ import {
     Container,
     Grid,
     IconButton,
+    MenuItem,
     Paper,
     Toolbar,
     Typography,
@@ -48,41 +49,65 @@ function AppWithRedux() {
     const todolists = useSelector<AppStateType, Array<TodolistType>>((state) => state.todolists);
     const dispatch = useDispatch();
 
-    const changeFilter = useCallback((value: FilterButtonType, todolistId: string) => {
-        let action = changeTodolistFilterAC(todolistId, value);
-        dispatch(action);
-    }, [dispatch]);
-    const removeTodolist = useCallback((todolistId: string) => {
-        let action = removeTodolistAC(todolistId);
-        dispatch(action);
-    }, [dispatch]);
-    const addTodolist = useCallback((title: string) => {
-        let action = addTodolistAC(title);
-        dispatch(action);
-    }, [dispatch]);
-    const changeTodolistTitle = useCallback((todolistId: string, newTitle: string) => {
-        let action = changeTodolistTitleAC(todolistId, newTitle);
-        dispatch(action);
-    }, [dispatch]);
+    const changeFilter = useCallback(
+        (value: FilterButtonType, todolistId: string) => {
+            let action = changeTodolistFilterAC(todolistId, value);
+            dispatch(action);
+        },
+        [dispatch],
+    );
+    const removeTodolist = useCallback(
+        (todolistId: string) => {
+            let action = removeTodolistAC(todolistId);
+            dispatch(action);
+        },
+        [dispatch],
+    );
+    const addTodolist = useCallback(
+        (title: string) => {
+            let action = addTodolistAC(title);
+            dispatch(action);
+        },
+        [dispatch],
+    );
+    const changeTodolistTitle = useCallback(
+        (todolistId: string, newTitle: string) => {
+            let action = changeTodolistTitleAC(todolistId, newTitle);
+            dispatch(action);
+        },
+        [dispatch],
+    );
 
     const tasks = useSelector<AppStateType, TasksStateType>((state) => state.tasks);
 
-    const changeTaskStatus = useCallback((todolistId: string, taskId: string, checked: boolean) => {
-        let action = changeTaskStatusAC(taskId, checked, todolistId);
-        dispatch(action);
-    }, [dispatch]);
-    const removeTask = useCallback((todolistId: string, taskId: string) => {
-        let action = removeTasksAC(taskId, todolistId);
-        dispatch(action);
-    }, [dispatch]);
-    const addTask = useCallback((todolistId: string, newTitle: string) => {
-        let action = addTaskAC(newTitle, todolistId);
-        dispatch(action);
-    }, [dispatch]);
-    const changeTitleTask = useCallback((todolistId: string, taskId: string, newTitle: string) => {
-        let action = changeTaskTitleAC(taskId, newTitle, todolistId);
-        dispatch(action);
-    }, [dispatch]);
+    const changeTaskStatus = useCallback(
+        (todolistId: string, taskId: string, checked: boolean) => {
+            let action = changeTaskStatusAC(taskId, checked, todolistId);
+            dispatch(action);
+        },
+        [dispatch],
+    );
+    const removeTask = useCallback(
+        (todolistId: string, taskId: string) => {
+            let action = removeTasksAC(taskId, todolistId);
+            dispatch(action);
+        },
+        [dispatch],
+    );
+    const addTask = useCallback(
+        (todolistId: string, newTitle: string) => {
+            let action = addTaskAC(newTitle, todolistId);
+            dispatch(action);
+        },
+        [dispatch],
+    );
+    const changeTitleTask = useCallback(
+        (todolistId: string, taskId: string, newTitle: string) => {
+            let action = changeTaskTitleAC(taskId, newTitle, todolistId);
+            dispatch(action);
+        },
+        [dispatch],
+    );
 
     return (
         <div className="App">
@@ -97,13 +122,13 @@ function AppWithRedux() {
                     <Button color="inherit">Login</Button>
                 </Toolbar>
             </AppBar>
+
             <Container fixed>
                 <Grid container style={{ padding: "20px" }}>
                     <AddItemForm callback={addTodolist} />
                 </Grid>
                 <Grid container spacing={3}>
                     {todolists.map((todolist) => {
-
                         return (
                             <Grid item>
                                 <Paper elevation={3} style={{ padding: "10px" }}>

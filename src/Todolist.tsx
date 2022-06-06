@@ -5,8 +5,8 @@ import classes from "./Todolist.module.css";
 import AddItemForm from "./Components/AddItemForm";
 import EditableSpan from "./Components/EditableSpan";
 import { Button, IconButton } from "@mui/material";
-import { Delete } from "@mui/icons-material";
 import { Task } from "./Task";
+import ClearIcon from '@mui/icons-material/Clear';
 
 type PropsType = {
     id: string;
@@ -23,12 +23,11 @@ type PropsType = {
 };
 
 const Todolist = memo((props: PropsType) => {
-    console.log("Todolist called");
     const onChangeStatusHandler = useCallback(
         (todolistId: string, newId: string, value: boolean) => {
             props.changeStatus(todolistId, newId, value);
         },
-        [props.changeStatus],
+        [props.changeStatus, props],
     );
     const onChangeTodolistTitleHandler = useCallback(
         (newTitle: string) => {
@@ -72,7 +71,7 @@ const Todolist = memo((props: PropsType) => {
                             props.removeTodolist(props.id);
                         }}
                     >
-                        <Delete />
+                        <ClearIcon />
                     </IconButton>
                 </div>
             </div>

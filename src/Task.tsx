@@ -3,6 +3,7 @@ import { Checkbox, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import EditableSpan from "./Components/EditableSpan";
 import { TaskType } from "./AppWithRedux";
+import classes from "./Task.module.css";
 
 type TaskPropsType = {
     todolistId: string;
@@ -32,13 +33,14 @@ export const Task = memo((props: TaskPropsType) => {
     }, [props.removeTask, props.todolistId, props.task.id]);
 
     return (
-        <div key={props.task.id}>
+        <div className={classes.task} key={props.task.id}>
+            <Checkbox color={"primary"} checked={props.task.isDone} onChange={onChangeHandler} />
+
+            <EditableSpan title={props.task.title} onChange={onChangeTaskTitle} />
+
             <IconButton onClick={onClickHandler}>
                 <Delete />
             </IconButton>
-
-            <Checkbox color={"primary"} checked={props.task.isDone} onChange={onChangeHandler} />
-            <EditableSpan title={props.task.title} onChange={onChangeTaskTitle} />
         </div>
     );
 });

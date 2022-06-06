@@ -2,14 +2,13 @@ import React, { ChangeEvent, KeyboardEvent, useState } from "react";
 import { IconButton, TextField } from "@mui/material";
 import { AddBox } from "@mui/icons-material";
 
-type AddItemFormType = {
+export type AddItemFormType = {
     callback: (title: string) => void;
 };
 
 const AddItemForm = React.memo((props: AddItemFormType) => {
     let [title, setTitle] = useState("");
     let [error, setError] = useState<string | null>(null);
-    console.log("AddItemForm");
     const onChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
         if (error !== null) {
             setError(null);
