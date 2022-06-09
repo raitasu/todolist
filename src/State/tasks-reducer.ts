@@ -1,6 +1,7 @@
 import { v1 } from "uuid";
 import { TasksStateType } from "../AppWithRedux";
 import { AddTodolistType } from "./todolists-reducer";
+import { TaskPriorities, TaskStatuses, TaskType } from "../api/todolist-api";
 
 export type ActionType =
     | RemoveTasksType
@@ -23,7 +24,18 @@ export const tasksReducer = (state = initialState, action: ActionType) => {
                 [action.todolistId]: state[action.todolistId].filter((t) => t.id !== action.taskId),
             };
         case "ADD-TASK":
-            let newTask = { id: v1(), title: action.newTaskTitle, isDone: false };
+            let newTask: TaskType = {
+                id: v1(),
+                title: action.newTaskTitle,
+                status: TaskStatuses.New,
+                description: "",
+                todoListId: action.todolistId,
+                order: 0,
+                priority: TaskPriorities.Hi,
+                startDate: "",
+                deadline: "",
+                addedDate: "",
+            };
             return { ...state, [action.todolistId]: [newTask, ...state[action.todolistId]] };
         case "CHANGE-TASK-STATUS":
             return {
@@ -32,7 +44,7 @@ export const tasksReducer = (state = initialState, action: ActionType) => {
                     t.id === action.taskId
                         ? {
                               ...t,
-                              isDone: action.statusValue,
+                              status: action.status,
                           }
                         : t,
                 ),
@@ -78,11 +90,11 @@ export const changeTaskTitleAC = (taskId: string, newTaskTitle: string, todolist
         newTaskTitle,
     } as const;
 };
-export const changeTaskStatusAC = (taskId: string, statusValue: boolean, todolistId: string) => {
+export const changeTaskStatusAC = (taskId: string, status: TaskStatuses, todolistId: string) => {
     return {
         type: "CHANGE-TASK-STATUS",
         taskId: taskId,
-        statusValue: statusValue,
+        status: status,
         todolistId: todolistId,
     } as const;
 };

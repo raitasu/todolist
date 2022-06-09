@@ -1,11 +1,10 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
 
-import { Button } from "./Button";
-import AddItemForm from "../Components/AddItemForm";
 import { action } from "@storybook/addon-actions";
 import { Task } from "../Task";
 import { v1 } from "uuid";
+import { TaskPriorities, TaskStatuses } from "../api/todolist-api";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -26,10 +25,32 @@ const Template: ComponentStory<typeof Task> = (args) => <Task {...args} />;
 export const TaskIsDoneStory = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 TaskIsDoneStory.args = {
-    task: { id: v1(), title: "FirstTask", isDone: true },
+    task: {
+        id: v1(),
+        title: "FirstTask",
+        status: TaskStatuses.Completed,
+        description: "",
+        todoListId: "todolistId1",
+        order: 0,
+        priority: TaskPriorities.Hi,
+        startDate: "",
+        deadline: "",
+        addedDate: "",
+    },
 };
 export const TaskIsNotDoneStory = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
 TaskIsNotDoneStory.args = {
-    task: { id: v1(), title: "SecondTask", isDone: false },
+    task: {
+        id: v1(),
+        title: "SecondTask",
+        status: TaskStatuses.Completed,
+        description: "",
+        todoListId: "todolistId1",
+        order: 0,
+        priority: TaskPriorities.Hi,
+        startDate: "",
+        deadline: "",
+        addedDate: "",
+    },
 };

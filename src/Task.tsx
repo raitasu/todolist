@@ -2,14 +2,14 @@ import React, { ChangeEvent, memo, useCallback } from "react";
 import { Checkbox, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import EditableSpan from "./Components/EditableSpan";
-import { TaskType } from "./AppWithRedux";
 import classes from "./Task.module.css";
+import { TaskStatuses, TaskType } from "./api/todolist-api";
 
 type TaskPropsType = {
     todolistId: string;
     task: TaskType;
     changeTitleTask: (todolistId: string, taskId: string, newTitle: string) => void;
-    onChangeStatusHandler: (todolistId: string, taskId: string, checkedValue: boolean) => void;
+    onChangeStatusHandler: (todolistId: string, taskId: string, status: TaskStatuses) => void;
     removeTask: (todolistId: string, taskId: string) => void;
 };
 export const Task = memo((props: TaskPropsType) => {
@@ -24,7 +24,7 @@ export const Task = memo((props: TaskPropsType) => {
             props.onChangeStatusHandler(
                 props.todolistId,
                 props.task.id,
-                event.currentTarget.checked,
+                event.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New,
             ),
         [props.onChangeStatusHandler, props.todolistId, props.task.id],
     );
@@ -34,7 +34,7 @@ export const Task = memo((props: TaskPropsType) => {
 
     return (
         <div className={classes.task} key={props.task.id}>
-            <Checkbox color={"primary"} checked={props.task.isDone} onChange={onChangeHandler} />
+            <Checkbox color={"primary"} checked={props.task.status === TaskStatuses.Completed} onChange={onChangeHandler} />
 
             <EditableSpan title={props.task.title} onChange={onChangeTaskTitle} />
 

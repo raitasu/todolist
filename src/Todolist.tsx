@@ -1,12 +1,13 @@
 import React, { memo, useCallback } from "react";
-import { FilterButtonType, TaskType } from "./AppWithRedux";
 import "./App.css";
 import classes from "./Todolist.module.css";
 import AddItemForm from "./Components/AddItemForm";
 import EditableSpan from "./Components/EditableSpan";
 import { Button, IconButton } from "@mui/material";
 import { Task } from "./Task";
-import ClearIcon from '@mui/icons-material/Clear';
+import ClearIcon from "@mui/icons-material/Clear";
+import { TaskStatuses, TaskType } from "./api/todolist-api";
+import { FilterButtonType } from "./State/todolists-reducer";
 
 type PropsType = {
     id: string;
@@ -15,7 +16,7 @@ type PropsType = {
     removeTask: (todolistId: string, id: string) => void;
     changeFilter: (value: FilterButtonType, todolistId: string) => void;
     addTask: (todolistId: string, newTitle: string) => void;
-    changeStatus: (todolistId: string, id: string, checked: boolean) => void;
+    changeStatus: (todolistId: string, id: string, status: TaskStatuses) => void;
     filter: string;
     removeTodolist: (todolistid: string) => void;
     changeTitleTask: (todolistId: string, id: string, newTitle: string) => void;
@@ -24,8 +25,8 @@ type PropsType = {
 
 const Todolist = memo((props: PropsType) => {
     const onChangeStatusHandler = useCallback(
-        (todolistId: string, newId: string, value: boolean) => {
-            props.changeStatus(todolistId, newId, value);
+        (todolistId: string, newId: string, status: TaskStatuses) => {
+            props.changeStatus(todolistId, newId, status);
         },
         [props.changeStatus, props],
     );
@@ -39,10 +40,10 @@ const Todolist = memo((props: PropsType) => {
     let tasksForTodolist = props.tasks;
 
     if (props.filter === "active") {
-        tasksForTodolist = tasksForTodolist.filter((el) => !el.isDone);
+        tasksForTodolist = tasksForTodolist.filter((el) => el.status === TaskStatuses.New);
     }
     if (props.filter === "completed") {
-        tasksForTodolist = tasksForTodolist.filter((el) => el.isDone);
+        tasksForTodolist = tasksForTodolist.filter((el) => el.status === TaskStatuses.Completed);
     }
 
     const onClickHandler = useCallback(
