@@ -18,7 +18,10 @@ export type TodolistDomainType = TodolistType & {
 };
 export type FilterButtonType = "all" | "active" | "completed";
 
-export const todolistsReducer = (state = initialState, action: ActionType):Array<TodolistDomainType> => {
+export const todolistsReducer = (
+    state = initialState,
+    action: ActionType,
+): Array<TodolistDomainType> => {
     switch (action.type) {
         case "REMOVE-TODOLIST":
             return state.filter((td) => td.id !== action.payload.todolistId);
@@ -29,8 +32,8 @@ export const todolistsReducer = (state = initialState, action: ActionType):Array
                     id: action.payload.todolistId,
                     title: action.payload.newTodolistTitle,
                     filter: "all",
-                    addedDate:'',
-                    order:0
+                    addedDate: "",
+                    order: 0,
                 },
             ];
         case "CHANGE-TODOLIST-TITLE":
@@ -69,7 +72,7 @@ export const addTodolistAC = (newTodolistTitle: string) => {
         type: "ADD-TODOLIST",
         payload: {
             newTodolistTitle,
-            todolistId: v1(),
+            todolistId  : v1(),
         },
     } as const;
 };
