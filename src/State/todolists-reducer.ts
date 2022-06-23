@@ -1,15 +1,18 @@
 import { v1 } from "uuid";
-import { TodolistType } from "../api/todolist-api";
+import { todolistAPI, TodolistType } from "../api/todolist-api";
+import { Dispatch } from "react";
 
 export type ActionType =
     | RemoveTodolistType
     | AddTodolistType
     | ChangeTodolistTitleType
-    | ChangeTodolistFilterType;
+    | ChangeTodolistFilterType
+    | SetTodolistType;
 export type RemoveTodolistType = ReturnType<typeof removeTodolistAC>;
 export type AddTodolistType = ReturnType<typeof addTodolistAC>;
 export type ChangeTodolistTitleType = ReturnType<typeof changeTodolistTitleAC>;
 export type ChangeTodolistFilterType = ReturnType<typeof changeTodolistFilterAC>;
+export type SetTodolistType = ReturnType<typeof setTodolistAC>;
 
 const initialState: Array<TodolistDomainType> = [];
 
@@ -54,6 +57,10 @@ export const todolistsReducer = (
                       }
                     : td,
             );
+        case "SET-TODOLIST":
+            return action.payload.todolists.map((todolist) => {
+                return { ...todolist, filter: "all" };
+            });
         default:
             return state;
     }
@@ -72,7 +79,7 @@ export const addTodolistAC = (newTodolistTitle: string) => {
         type: "ADD-TODOLIST",
         payload: {
             newTodolistTitle,
-            todolistId  : v1(),
+            todolistId: v1(),
         },
     } as const;
 };
@@ -93,4 +100,19 @@ export const changeTodolistFilterAC = (todolistId: string, filterValue: FilterBu
             filterValue,
         },
     } as const;
+};
+
+export const setTodolistAC = (todolists: Array<TodolistType>) => {
+    return {
+        type: "SET-TODOLIST",
+        payload: {
+            todolists,
+        },
+    } as const;
+};
+
+export const fetchTodolistThunk = (dispatch: Dispatch<ActionType>):void => {
+     todolistAPI.getTodolists().then((response) => {
+        dispatch(setTodolistAC(response.data));
+    });
 };
