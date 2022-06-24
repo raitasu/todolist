@@ -2,8 +2,9 @@ import { v1 } from "uuid";
 import { TasksStateType } from "../AppWithRedux";
 import { AddTodolistType, SetTodolistType } from "./todolists-reducer";
 import { TaskPriorities, TaskStatuses, TaskType } from "../api/todolist-api";
+import { AppActionType } from "./store";
 
-export type ActionType =
+export type TasksActionsType =
     | RemoveTasksType
     | AddTasksType
     | ChangeTaskStatusType
@@ -17,7 +18,7 @@ export type ChangeTaskTitleType = ReturnType<typeof changeTaskTitleAC>;
 
 const initialState: TasksStateType = {};
 
-export const tasksReducer = (state = initialState, action: ActionType) => {
+export const tasksReducer = (state = initialState, action: AppActionType) => {
     switch (action.type) {
         case "REMOVE-TASKS":
             return {

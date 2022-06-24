@@ -1,8 +1,9 @@
 import { v1 } from "uuid";
 import { todolistAPI, TodolistType } from "../api/todolist-api";
-import { Dispatch } from "react";
+import { Dispatch } from "redux";
+import { AppActionType } from "./store";
 
-export type ActionType =
+export type TodolistsActionsType =
     | RemoveTodolistType
     | AddTodolistType
     | ChangeTodolistTitleType
@@ -23,7 +24,7 @@ export type FilterButtonType = "all" | "active" | "completed";
 
 export const todolistsReducer = (
     state = initialState,
-    action: ActionType,
+    action: AppActionType,
 ): Array<TodolistDomainType> => {
     switch (action.type) {
         case "REMOVE-TODOLIST":
@@ -111,8 +112,10 @@ export const setTodolistAC = (todolists: Array<TodolistType>) => {
     } as const;
 };
 
-export const fetchTodolistThunk = (dispatch: Dispatch<ActionType>):void => {
-     todolistAPI.getTodolists().then((response) => {
-        dispatch(setTodolistAC(response.data));
-    });
+export const fetchTodolistTC = () => {
+    return (dispatch: Dispatch) => {
+        todolistAPI.getTodolists().then((response) => {
+            dispatch(setTodolistAC(response.data));
+        });
+    };
 };
