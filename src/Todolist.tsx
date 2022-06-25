@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from "react";
+import React, { memo, useCallback, useEffect } from "react";
 import "./App.css";
 import classes from "./Todolist.module.css";
 import AddItemForm from "./Components/AddItemForm";
@@ -8,6 +8,8 @@ import { Task } from "./Task";
 import ClearIcon from "@mui/icons-material/Clear";
 import { TaskStatuses, TaskType } from "./api/todolist-api";
 import { FilterButtonType } from "./State/todolists-reducer";
+import { useAppDispatch } from "./State/hooks";
+import { addTaskTC, getTasksTC } from "./State/tasks-reducer";
 
 type PropsType = {
     id: string;
@@ -24,6 +26,13 @@ type PropsType = {
 };
 
 const Todolist = memo((props: PropsType) => {
+
+  const dispatch = useAppDispatch()
+
+  useEffect(()=>{
+    dispatch(getTasksTC(props.id))
+  }, [])
+
     const onChangeStatusHandler = useCallback(
         (todolistId: string, newId: string, status: TaskStatuses) => {
             props.changeStatus(todolistId, newId, status);
@@ -54,7 +63,8 @@ const Todolist = memo((props: PropsType) => {
     );
     const addTask = useCallback(
         (title: string) => {
-            props.addTask(props.id, title);
+          dispatch(addTaskTC(props.id, title))
+            // props.addTask(props.id, title);
         },
         [props.addTask, props.id],
     );

@@ -4,6 +4,8 @@ import { Delete } from "@mui/icons-material";
 import EditableSpan from "./Components/EditableSpan";
 import classes from "./Task.module.css";
 import { TaskStatuses, TaskType } from "./api/todolist-api";
+import { useAppDispatch } from "./State/hooks";
+import { deleteTaskTC } from "./State/tasks-reducer";
 
 type TaskPropsType = {
     todolistId: string;
@@ -13,7 +15,11 @@ type TaskPropsType = {
     removeTask: (todolistId: string, taskId: string) => void;
 };
 export const Task = memo((props: TaskPropsType) => {
-    const onChangeTaskTitle = useCallback(
+
+  const dispatch = useAppDispatch()
+
+
+  const onChangeTaskTitle = useCallback(
         (newTitle: string) => {
             props.changeTitleTask(props.todolistId, props.task.id, newTitle);
         },
@@ -29,7 +35,8 @@ export const Task = memo((props: TaskPropsType) => {
         [props.onChangeStatusHandler, props.todolistId, props.task.id],
     );
     const onClickHandler = useCallback(() => {
-        props.removeTask(props.todolistId, props.task.id);
+      dispatch(deleteTaskTC(props.todolistId,props.task.id))
+        // props.removeTask(props.todolistId, props.task.id);
     }, [props.removeTask, props.todolistId, props.task.id]);
 
     return (

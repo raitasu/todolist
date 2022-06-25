@@ -22,7 +22,6 @@ import {
   TodolistDomainType
 } from "./State/todolists-reducer";
 import {
-    addTaskAC,
     changeTaskStatusAC,
     changeTaskTitleAC,
     removeTasksAC,
@@ -38,7 +37,7 @@ export type TasksStateType = {
 
 function AppWithRedux() {
     useEffect(() => {
-      dispatch(fetchTodolistTC)
+      dispatch(fetchTodolistTC())
     }, []);
 
     const todolists = useSelector<AppStateType, Array<TodolistDomainType>>(
@@ -91,13 +90,7 @@ function AppWithRedux() {
         },
         [dispatch],
     );
-    const addTask = useCallback(
-        (todolistId: string, newTitle: string) => {
-            let action = addTaskAC(newTitle, todolistId);
-            dispatch(action);
-        },
-        [dispatch],
-    );
+
     const changeTitleTask = useCallback(
         (todolistId: string, taskId: string, newTitle: string) => {
             let action = changeTaskTitleAC(taskId, newTitle, todolistId);

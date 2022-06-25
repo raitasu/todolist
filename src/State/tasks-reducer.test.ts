@@ -108,7 +108,13 @@ test.skip('correct task should be deleted from correct array', () => {
 
 test.skip('correct task should be added to correct array', () => {
 
-    const action = addTaskAC("juce", "todolistId2");
+    const action = addTaskAC({id: "1", title: "CSS", status: TaskStatuses.New,description: "",
+        todoListId: "todolistId1",
+        order: 0,
+        priority: TaskPriorities.Hi,
+        startDate: "",
+        deadline: "",
+        addedDate: ""});
 
     const endState = tasksReducer(startState, action)
 
