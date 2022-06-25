@@ -17,7 +17,6 @@ type PropsType = {
     tasks: Array<TaskType>;
     removeTask: (todolistId: string, id: string) => void;
     changeFilter: (value: FilterButtonType, todolistId: string) => void;
-    addTask: (todolistId: string, newTitle: string) => void;
     changeStatus: (todolistId: string, id: string, status: TaskStatuses) => void;
     filter: string;
     removeTodolist: (todolistid: string) => void;
@@ -26,12 +25,11 @@ type PropsType = {
 };
 
 const Todolist = memo((props: PropsType) => {
+    const dispatch = useAppDispatch();
 
-  const dispatch = useAppDispatch()
-
-  useEffect(()=>{
-    dispatch(getTasksTC(props.id))
-  }, [])
+    useEffect(() => {
+        dispatch(getTasksTC(props.id));
+    }, []);
 
     const onChangeStatusHandler = useCallback(
         (todolistId: string, newId: string, status: TaskStatuses) => {
@@ -63,10 +61,9 @@ const Todolist = memo((props: PropsType) => {
     );
     const addTask = useCallback(
         (title: string) => {
-          dispatch(addTaskTC(props.id, title))
-            // props.addTask(props.id, title);
+            dispatch(addTaskTC(props.id, title));
         },
-        [props.addTask, props.id],
+        [props.id],
     );
 
     return (
