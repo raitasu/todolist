@@ -14,19 +14,21 @@ import {
 } from "@mui/material";
 import { Menu } from "@mui/icons-material";
 import {
-  addTodolistAC,
-  changeTodolistFilterAC,
-  changeTodolistTitleAC, fetchTodolistTC,
-  FilterButtonType,
-  removeTodolistAC,
-  TodolistDomainType
+    addTodolistAC,
+    changeTodolistFilterAC,
+    changeTodolistTitleAC,
+    fetchTodolistTC,
+    FilterButtonType,
+    removeTodolistAC,
+    TodolistDomainType,
 } from "./State/todolists-reducer";
 import {
     changeTaskStatusAC,
     changeTaskTitleAC,
     removeTasksAC,
+    updateTaskStatusTC,
 } from "./State/tasks-reducer";
-import {  useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { AppStateType } from "./State/store";
 import { TaskStatuses, TaskType } from "./api/todolist-api";
 import { useAppDispatch } from "./State/hooks";
@@ -37,7 +39,7 @@ export type TasksStateType = {
 
 function AppWithRedux() {
     useEffect(() => {
-      dispatch(fetchTodolistTC())
+        dispatch(fetchTodolistTC());
     }, []);
 
     const todolists = useSelector<AppStateType, Array<TodolistDomainType>>(
@@ -78,8 +80,8 @@ function AppWithRedux() {
 
     const changeTaskStatus = useCallback(
         (todolistId: string, taskId: string, status: TaskStatuses) => {
-            let action = changeTaskStatusAC(taskId, status, todolistId);
-            dispatch(action);
+            // let action = changeTaskStatusAC(taskId, status, todolistId);
+            dispatch(updateTaskStatusTC(taskId, todolistId, status));
         },
         [dispatch],
     );

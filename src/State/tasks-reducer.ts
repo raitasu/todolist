@@ -1,7 +1,7 @@
 import { TasksStateType } from "../AppWithRedux";
 import { AddTodolistType, SetTodolistType } from "./todolists-reducer";
 import { TaskStatuses, TaskType, todolistAPI } from "../api/todolist-api";
-import { AppActionType } from "./store";
+import { AppActionType, AppStateType } from "./store";
 import { Dispatch } from "redux";
 
 export type TasksActionsType =
@@ -135,5 +135,29 @@ export const addTaskTC = (todolistId: string, title: string) => {
         todolistAPI.createTask(todolistId, title).then((response) => {
             dispatch(addTaskAC(response.data.data.item));
         });
+    };
+};
+export const updateTaskStatusTC = (taskId: string, todolistId: string, status: TaskStatuses) => {
+    return (dispatch: Dispatch, getState: () => AppStateType) => {
+        const allTasksFromState = getState().tasks;
+        const tasksForCurrentTodolist = allTasksFromState[todolistId];
+        const task = tasksForCurrentTodolist.find((t) => {
+            return t.id === taskId;
+        });
+        if (task) {
+            todolistAPI
+                .updateTask(todolistId, taskId, {
+                    title: task.title,
+                    startDate: task.startDate,
+                    priority: task.priority,
+                    description: task.description,
+                    deadline: task.deadline,
+                    status: status,
+                })
+                .then(() => {
+                    const action = changeTaskStatusAC(taskId, status, todolistId);
+                    dispatch(action);
+                });
+        }
     };
 };

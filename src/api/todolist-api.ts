@@ -43,9 +43,8 @@ export enum TaskPriorities {
     Middle,
     Hi,
     Urgently,
-    Later
+    Later,
 }
-
 
 const instance = axios.create({
     baseURL: "https://social-network.samuraijs.com/api/1.1/",
@@ -85,7 +84,7 @@ export const todolistAPI = {
     deleteTask(todolistId: string, taskId: string) {
         return instance.delete<ResponseType>(`/todo-lists/${todolistId}/tasks/${taskId}`);
     },
-    updateTitleTask(todolistId: string, taskId: string, obj: { title: string }) {
+    updateTask(todolistId: string, taskId: string, obj: {}) {
         return instance.put<ResponseType<{ item: TaskType }>>(
             `/todo-lists/${todolistId}/tasks/${taskId}`,
             obj,
